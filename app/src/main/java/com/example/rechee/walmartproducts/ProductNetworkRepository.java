@@ -3,6 +3,7 @@ package com.example.rechee.walmartproducts;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelScope;
 import com.example.rechee.walmartproducts.models.Product;
 import com.example.rechee.walmartproducts.models.ProductsResponse;
 
@@ -14,6 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@ViewModelScope
 public class ProductNetworkRepository implements ProductRepository {
 
     private final ProductService productService;

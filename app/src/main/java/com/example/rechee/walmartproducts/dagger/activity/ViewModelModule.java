@@ -2,7 +2,8 @@ package com.example.rechee.walmartproducts.dagger.activity;
 
 import android.content.Context;
 
-import com.example.rechee.sharkfeed.ViewModelFactory;
+import com.example.rechee.walmartproducts.ProductRepository;
+import com.example.rechee.walmartproducts.ViewModelFactory;
 
 import javax.inject.Named;
 
@@ -17,11 +18,4 @@ import dagger.Provides;
 @Module
 public class ViewModelModule {
 
-//    @Provides
-//    @ActivityScope
-//    ViewModelFactory viewModelFactory(Lazy<UserRepository> userRepositoryLazy,
-//                                      @Named("applicationContext") Context context,
-//                                      Lazy<RepoRepository> repoRepositoryLazy) {
-//        return new ViewModelFactory(userRepositoryLazy, context, repoRepositoryLazy);
-//    }
 }

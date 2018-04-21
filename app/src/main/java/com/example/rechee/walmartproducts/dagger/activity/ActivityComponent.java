@@ -1,7 +1,6 @@
 package com.example.rechee.walmartproducts.dagger.activity;
 
-import com.example.rechee.sharkfeed.MainScreen.ImageDialogFragment;
-import com.example.rechee.sharkfeed.MainScreen.MainActivity;
+import com.example.rechee.walmartproducts.mainScreen.MainActivity;
 
 import dagger.Subcomponent;
 
@@ -13,5 +12,4 @@ import dagger.Subcomponent;
 @Subcomponent(modules={ViewModelModule.class})
 public interface ActivityComponent {
     void inject(MainActivity mainActivity);
-    void inject(ImageDialogFragment imageDialogFragment);
 }

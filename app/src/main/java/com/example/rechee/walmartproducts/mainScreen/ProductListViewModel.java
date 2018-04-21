@@ -1,5 +1,6 @@
 package com.example.rechee.walmartproducts.mainScreen;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
@@ -17,7 +18,7 @@ public class ProductListViewModel extends ViewModel {
         this.repository = repository;
     }
 
-    public List<Product> getProducts(int page) {
+    public LiveData<List<Product>> getProducts(int page) {
         this.lastPageRequested = page;
         return repository.getProducts(page, 20);
     }

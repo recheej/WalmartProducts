@@ -3,10 +3,8 @@ package com.example.rechee.walmartproducts.dagger.viewmodel;
 
 import android.content.Context;
 
-import com.example.rechee.sharkfeed.FlickrService;
-import com.example.rechee.sharkfeed.MainScreen.PhotoRepository;
-import com.example.rechee.sharkfeed.MainScreen.PhotoRepositoryNetwork;
-import com.example.rechee.sharkfeed.R;
+import com.example.rechee.walmartproducts.ProductNetworkRepository;
+import com.example.rechee.walmartproducts.ProductRepository;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,8 +23,7 @@ public class RepositoryModule {
     }
 
     @Provides
-    @ViewModelScope
-    PhotoRepository userRepository(FlickrService flickrService) {
-        return new PhotoRepositoryNetwork(flickrService, context.getString(R.string.flickr_api_key));
+    ProductRepository productRepository(ProductNetworkRepository productNetworkRepository){
+        return productNetworkRepository;
     }
 }
