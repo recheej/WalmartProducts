@@ -22,7 +22,7 @@ public class ProductNetworkRepository implements ProductRepository {
     private final String apiKey;
 
     @Inject
-    ProductNetworkRepository(ProductService productService, String apiKey) {
+    public ProductNetworkRepository(ProductService productService, String apiKey) {
         this.productService = productService;
         this.apiKey = apiKey;
     }

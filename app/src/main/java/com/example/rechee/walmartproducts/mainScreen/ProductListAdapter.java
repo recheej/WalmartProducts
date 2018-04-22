@@ -32,10 +32,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
     }
 
-    private final List<Product> products;
+    private List<Product> products;
 
-    public ProductListAdapter(List<Product> products){
-        this.products = products;
+    public ProductListAdapter(List<Product> startingProducts){
+        this.products = startingProducts;
     }
 
     @NonNull
