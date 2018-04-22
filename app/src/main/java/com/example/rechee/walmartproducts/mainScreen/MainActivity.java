@@ -12,6 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import com.example.rechee.walmartproducts.R;
 import com.example.rechee.walmartproducts.ViewModelFactory;
 import com.example.rechee.walmartproducts.WalmartProductsApplication;
+import com.example.rechee.walmartproducts.dagger.application.DaggerApplicationComponent;
+import com.example.rechee.walmartproducts.dagger.network.ApiComponent;
+import com.example.rechee.walmartproducts.dagger.network.DaggerApiComponent;
+import com.example.rechee.walmartproducts.dagger.network.NetModule;
+import com.example.rechee.walmartproducts.dagger.viewmodel.DaggerRepositoryComponent;
+import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryModule;
 import com.example.rechee.walmartproducts.models.Product;
 
 import java.util.List;
@@ -33,8 +39,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        WalmartProductsApplication.getAppComponent(this)
-                .inject(this);
+        ApiComponent apiComponent = DaggerApiComponent.builder()
+                .netModule(new NetModule())
+                .applicationComponent(WalmartProductsApplication.getAppComponent(this))
+                .build();
+
+        DaggerRepositoryComponent.builder()
+                .repositoryModule(new RepositoryModule())
+                .apiComponent(apiComponent)
+                .build().inject(this);
 
         productRecyclerView = findViewById(R.id.recyclerView_products);
         productRecyclerView.setHasFixedSize(true);
@@ -48,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(@Nullable List<Product> products) {
                 if(products != null){
                     productListAdapter = new ProductListAdapter(products);
+                    productRecyclerView.setAdapter(productListAdapter);
                 }
             }
         });

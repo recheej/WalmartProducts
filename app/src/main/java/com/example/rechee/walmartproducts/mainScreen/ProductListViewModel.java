@@ -13,7 +13,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-
+@RepositoryScope
 public class ProductListViewModel extends ViewModel {
 
     private final ProductRepository repository;

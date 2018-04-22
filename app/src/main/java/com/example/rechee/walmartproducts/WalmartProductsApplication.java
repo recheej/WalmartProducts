@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 
 import com.example.rechee.walmartproducts.dagger.application.ApplicationComponent;
+import com.example.rechee.walmartproducts.dagger.application.ApplicationContextModule;
 import com.example.rechee.walmartproducts.dagger.application.DaggerApplicationComponent;
 
 public class WalmartProductsApplication extends Application {
@@ -15,6 +16,7 @@ public class WalmartProductsApplication extends Application {
         super.onCreate();
 
         component = DaggerApplicationComponent.builder()
+                .applicationContextModule(new ApplicationContextModule(this))
                 .build();
     }
 

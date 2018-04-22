@@ -5,6 +5,7 @@ import com.example.rechee.walmartproducts.ProductRepository;
 import com.example.rechee.walmartproducts.dagger.application.ApplicationComponent;
 import com.example.rechee.walmartproducts.dagger.network.ApiComponent;
 import com.example.rechee.walmartproducts.dagger.network.NetModule;
+import com.example.rechee.walmartproducts.mainScreen.MainActivity;
 import com.example.rechee.walmartproducts.mainScreen.ProductListViewModel;
 
 import dagger.Component;
@@ -18,4 +19,5 @@ import dagger.Subcomponent;
 @Component(modules={RepositoryModule.class}, dependencies = {ApiComponent.class})
 public interface RepositoryComponent {
     ProductRepository productRepository();
+    void inject(MainActivity activity);
 }
