@@ -1,7 +1,9 @@
 package com.example.rechee.walmartproducts.mainScreen;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 
@@ -16,17 +18,24 @@ import javax.inject.Inject;
 @RepositoryScope
 public class ProductListViewModel extends ViewModel {
 
+    private static final int PAGE_SIZE = 10;
+
     private final ProductRepository repository;
     private MutableLiveData<List<Product>> products;
-    private int lastPageRequested = 0;
+    private int currentPage = 0;
 
     @Inject
     public ProductListViewModel(ProductRepository repository) {
         this.repository = repository;
+        products = new MutableLiveData<>();
     }
 
-    public LiveData<List<Product>> getProducts(int page) {
-        this.lastPageRequested = page;
-        return repository.getProducts(page, 20);
+    public void reset() {
+        this.currentPage = 0;
+    }
+
+    public LiveData<List<Product>> getProducts() {
+        this.currentPage++;
+        return repository.getProducts(this.currentPage, PAGE_SIZE);
     }
 }

@@ -9,6 +9,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.rechee.walmartproducts.R;
 import com.example.rechee.walmartproducts.ViewModelFactory;
@@ -50,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
                 .apiComponent(apiComponent)
                 .build().inject(this);
 
+        final ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.VISIBLE);
+
         productRecyclerView = findViewById(R.id.recyclerView_products);
         productRecyclerView.setHasFixedSize(true);
 
@@ -61,9 +66,11 @@ public class MainActivity extends AppCompatActivity {
         productRecyclerView.addItemDecoration(dividerItemDecoration);
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductListViewModel.class);
-        viewModel.getProducts(1).observe(this, new Observer<List<Product>>() {
+        viewModel.getProducts().observe(this, new Observer<List<Product>>() {
             @Override
             public void onChanged(@Nullable List<Product> products) {
+                progressBar.setVisibility(View.INVISIBLE);
+
                 if(products != null){
                     productListAdapter = new ProductListAdapter(products);
                     productRecyclerView.setAdapter(productListAdapter);
