@@ -20,7 +20,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         ImageView productImageView;
         TextView textViewProductName;
         TextView textViewProductPrice;
-        TextView textViewProductDescription;
         TextView textViewOutOfStock;
 
         ViewHolder(View itemView) {
@@ -29,7 +28,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             productImageView = itemView.findViewById(R.id.imageView_product);
             textViewProductName = itemView.findViewById(R.id.textView_productName);
             textViewProductPrice = itemView.findViewById(R.id.textView_productPrice);
-            textViewProductDescription = itemView.findViewById(R.id.textView_productDescription);
             textViewOutOfStock = itemView.findViewById(R.id.textView_outOfStock);
         }
     }
@@ -55,7 +53,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         //TODO: image
         holder.textViewProductName.setText(product.getProductName());
-        holder.textViewProductDescription.setText(product.getLongDescription());
         holder.textViewProductPrice.setText(product.getPrice()); //TODO: formatting?
 
         if(!product.getInStock()){
