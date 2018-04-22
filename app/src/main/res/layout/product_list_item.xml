@@ -41,7 +41,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/out_of_stock"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="#ff0000"/>
 
     </LinearLayout>
 
