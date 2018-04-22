@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryScope;
+import com.example.rechee.walmartproducts.mainScreen.ErrorMessage;
 import com.example.rechee.walmartproducts.models.Product;
 import com.example.rechee.walmartproducts.models.ProductsResponse;
 
@@ -16,7 +17,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 @RepositoryScope
-public class ProductNetworkRepository implements ProductRepository {
+public class ProductNetworkRepository extends BaseRepositoryImplementation implements ProductRepository {
 
     private final ProductService productService;
     private final String apiKey;
@@ -37,8 +38,13 @@ public class ProductNetworkRepository implements ProductRepository {
                 if(response.isSuccessful()){
                     final ProductsResponse body = response.body();
                     if(body != null){
-                        final List<Product> products = body.getProducts();
-                        productData.postValue(products);
+                        if(body.getStatus() == 200){
+                            final List<Product> products = body.getProducts();
+                            productData.postValue(products);
+                        }
+                        else{
+                            error.setValue(ErrorMessage.GENERAL);
+                        }
                     }
                 }
             }

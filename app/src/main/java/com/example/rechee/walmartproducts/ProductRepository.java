@@ -8,6 +8,6 @@ import com.example.rechee.walmartproducts.models.Product;
 import java.util.List;
 
 @RepositoryScope
-public interface ProductRepository {
+public interface ProductRepository extends BaseRepository {
     LiveData<List<Product>> getProducts(int page, int pageSize);
 }

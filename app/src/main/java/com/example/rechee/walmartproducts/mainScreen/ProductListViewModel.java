@@ -7,6 +7,7 @@ import android.arch.lifecycle.Transformations;
 import android.arch.lifecycle.ViewModel;
 
 
+import com.example.rechee.walmartproducts.BaseViewModel;
 import com.example.rechee.walmartproducts.ProductRepository;
 import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryScope;
 import com.example.rechee.walmartproducts.models.Product;
@@ -16,7 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 @RepositoryScope
-public class ProductListViewModel extends ViewModel {
+public class ProductListViewModel extends BaseViewModel {
 
     private static final int PAGE_SIZE = 10;
 
@@ -25,6 +26,7 @@ public class ProductListViewModel extends ViewModel {
 
     @Inject
     public ProductListViewModel(ProductRepository repository) {
+        super(repository);
         this.repository = repository;
     }
 
@@ -33,6 +35,9 @@ public class ProductListViewModel extends ViewModel {
     }
 
     public LiveData<List<Product>> getProducts() {
+        if(this.currentPage == 0){
+            currentPage = 1;
+        }
         return repository.getProducts(this.currentPage, PAGE_SIZE);
     }
 

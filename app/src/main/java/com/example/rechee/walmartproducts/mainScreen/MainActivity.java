@@ -4,14 +4,18 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.example.rechee.walmartproducts.BaseActivity;
 import com.example.rechee.walmartproducts.R;
 import com.example.rechee.walmartproducts.ViewModelFactory;
 import com.example.rechee.walmartproducts.WalmartProductsApplication;
@@ -27,7 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String CURRENT_PAGE_KEY = "current_page";
     @Inject
@@ -39,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
     private ProductListAdapter productListAdapter;
     private List<Product> products;
     private int currentPage = 1;
+    private ProgressBar progressBar;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 .apiComponent(apiComponent)
                 .build().inject(this);
 
-        final ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
         progressBar.setVisibility(View.VISIBLE);
 
         productRecyclerView = findViewById(R.id.recyclerView_products);
@@ -77,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductListViewModel.class);
 
+        setViewModel(viewModel);
+
         currentPage = viewModel.getCurrentPage();
 
         final EndlessRecyclerViewScrollListener endlessListener = new EndlessRecyclerViewScrollListener(layoutManager) {
@@ -90,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.INVISIBLE);
 
                         if (newProducts != null) {
-                            MainActivity.this.products.addAll(newProducts);
-
-                            int currentSize = MainActivity.this.products.size();
-                            MainActivity.this.productListAdapter.notifyItemRangeInserted(currentSize, newProducts.size());
+                            updateProducts(newProducts);
                         }
                     }
                 });
@@ -116,11 +121,41 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+        swipeRefreshLayout = findViewById(R.id.view_swipeToRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.this.products.clear();
+                viewModel.reset();
+                viewModel.getProducts().observe(MainActivity.this, new Observer<List<Product>>() {
+                    @Override
+                    public void onChanged(@Nullable List<Product> newProducts) {
+                        updateProducts(newProducts);
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void updateProducts(@NonNull List<Product> newProducts) {
+        MainActivity.this.products.addAll(newProducts);
+
+        int currentSize = MainActivity.this.products.size();
+        MainActivity.this.productListAdapter.notifyItemRangeInserted(currentSize, newProducts.size());
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         outState.putInt(CURRENT_PAGE_KEY, currentPage);
         super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    public void onError(ErrorMessage errorMessage) {
+        progressBar.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
+        Toast.makeText(this, R.string.error_general_products, Toast.LENGTH_LONG).show();
     }
 }
