@@ -3,6 +3,7 @@ package com.example.rechee.walmartproducts.dagger.application;
 import android.content.Context;
 
 import javax.inject.Named;
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

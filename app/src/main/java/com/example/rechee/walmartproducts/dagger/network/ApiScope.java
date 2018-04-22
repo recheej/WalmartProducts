@@ -1,4 +1,4 @@
-package com.example.rechee.walmartproducts.dagger.activity;
+package com.example.rechee.walmartproducts.dagger.network;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -13,7 +13,7 @@ import javax.inject.Scope;
 @Scope
 @Documented
 @Retention(value= RetentionPolicy.RUNTIME)
-public @interface ActivityScope
+public @interface ApiScope
 {
 
 }

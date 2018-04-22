@@ -16,14 +16,9 @@ import dagger.Provides;
 @Module
 public class RepositoryModule {
 
-    private final Context context;
-
-    public RepositoryModule(Context context){
-        this.context = context;
-    }
-
     @Provides
-    ProductRepository productRepository(ProductNetworkRepository productNetworkRepository){
+    @RepositoryScope
+    public ProductRepository productRepository(ProductNetworkRepository productNetworkRepository){
         return productNetworkRepository;
     }
 }

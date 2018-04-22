@@ -1,4 +1,4 @@
-package com.example.rechee.walmartproducts.dagger.repository;
+package com.example.rechee.walmartproducts.dagger.network;
 
 import android.content.Context;
 
@@ -21,13 +21,13 @@ public class NetModule {
     private static final String BASE_URL = "https://walmartlabs-test.appspot.com/_ah/api/walmart/v1/";
 
     @Provides
-    @RepositoryScope
+    @ApiScope
     public ProductService productService(Retrofit retrofit) {
         return retrofit.create(ProductService.class);
     }
 
     @Provides
-    @RepositoryScope
+    @ApiScope
     public Retrofit retrofit() {
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -36,7 +36,7 @@ public class NetModule {
     }
 
     @Provides
-    @RepositoryScope
+    @ApiScope
     public String apiKey(@Named("applicationContext") Context applicationContext){
         return applicationContext.getString(R.string.api_key);
     }

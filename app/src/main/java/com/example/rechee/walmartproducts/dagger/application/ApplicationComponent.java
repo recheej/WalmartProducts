@@ -1,11 +1,10 @@
 package com.example.rechee.walmartproducts.dagger.application;
 
-import com.example.rechee.walmartproducts.dagger.activity.ActivityComponent;
-import com.example.rechee.walmartproducts.dagger.activity.ViewModelModule;
-import com.example.rechee.walmartproducts.dagger.repository.NetModule;
-import com.example.rechee.walmartproducts.dagger.repository.RepositoryComponent;
-import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryModule;
-import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelComponent;
+import android.content.Context;
+
+import com.example.rechee.walmartproducts.mainScreen.MainActivity;
+
+import javax.inject.Named;
 
 import dagger.Component;
 
@@ -16,7 +15,6 @@ import dagger.Component;
 @ApplicationScope
 @Component(modules={ApplicationContextModule.class})
 public interface ApplicationComponent {
-    ViewModelComponent plus(RepositoryModule repositoryModule);
-    RepositoryComponent plus(NetModule netModule);
-    ActivityComponent plus(ViewModelModule viewModelModule);
+    @Named("applicationContext") Context appContext();
+    void inject(MainActivity activity);
 }
