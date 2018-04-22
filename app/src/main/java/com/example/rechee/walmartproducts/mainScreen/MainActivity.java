@@ -3,6 +3,7 @@ package com.example.rechee.walmartproducts.mainScreen;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -28,6 +29,7 @@ import javax.inject.Inject;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String CURRENT_PAGE_KEY = "current_page";
     @Inject
     ViewModelFactory viewModelFactory;
 
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager layoutManager;
     private ProductListAdapter productListAdapter;
     private List<Product> products;
+    private int currentPage = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         this.products = new ArrayList<>();
+
+        if(savedInstanceState != null){
+            currentPage = savedInstanceState.getInt(CURRENT_PAGE_KEY, 1);
+        }
 
         ApiComponent apiComponent = DaggerApiComponent.builder()
                 .netModule(new NetModule())
@@ -63,17 +70,26 @@ public class MainActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
 
         productRecyclerView.setLayoutManager(layoutManager);
-        productRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(layoutManager) {
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(productRecyclerView.getContext(),
+                layoutManager.getOrientation());
+        productRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductListViewModel.class);
+
+        currentPage = viewModel.getCurrentPage();
+
+        final EndlessRecyclerViewScrollListener endlessListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 progressBar.setVisibility(View.VISIBLE);
 
-                viewModel.getProducts(page).observe(MainActivity.this, new Observer<List<Product>>() {
+                viewModel.getNextProducts().observe(MainActivity.this, new Observer<List<Product>>() {
                     @Override
                     public void onChanged(@Nullable List<Product> newProducts) {
                         progressBar.setVisibility(View.INVISIBLE);
 
-                        if(newProducts != null){
+                        if (newProducts != null) {
                             MainActivity.this.products.addAll(newProducts);
 
                             int currentSize = MainActivity.this.products.size();
@@ -82,14 +98,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
             }
-        });
+        };
+        endlessListener.setStartingPage(currentPage);
+        productRecyclerView.addOnScrollListener(endlessListener);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(productRecyclerView.getContext(),
-                layoutManager.getOrientation());
-        productRecyclerView.addItemDecoration(dividerItemDecoration);
-
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProductListViewModel.class);
-        viewModel.getProducts(1).observe(this, new Observer<List<Product>>() {
+        viewModel.getProducts().observe(this, new Observer<List<Product>>() {
 
             @Override
             public void onChanged(@Nullable List<Product> newProducts) {
@@ -99,8 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.products.addAll(newProducts);
                     productListAdapter = new ProductListAdapter(MainActivity.this.products);
                     productRecyclerView.setAdapter(productListAdapter);
+                    endlessListener.setStartingPage(viewModel.getCurrentPage());
                 }
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        outState.putInt(CURRENT_PAGE_KEY, currentPage);
+        super.onSaveInstanceState(outState, outPersistentState);
     }
 }

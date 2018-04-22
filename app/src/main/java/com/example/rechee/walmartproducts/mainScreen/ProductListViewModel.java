@@ -32,8 +32,16 @@ public class ProductListViewModel extends ViewModel {
         this.currentPage = 0;
     }
 
-    public LiveData<List<Product>> getProducts(int page) {
-        this.currentPage = page;
+    public LiveData<List<Product>> getProducts() {
         return repository.getProducts(this.currentPage, PAGE_SIZE);
+    }
+
+    public LiveData<List<Product>> getNextProducts() {
+        currentPage++;
+        return repository.getProducts(this.currentPage, PAGE_SIZE);
+    }
+
+    public int getCurrentPage() {
+        return currentPage;
     }
 }
