@@ -14,5 +14,4 @@ import dagger.Component;
 @Component(modules={RepositoryModule.class}, dependencies = {ApiComponent.class})
 public interface ViewModelComponent {
     ProductRepository productRepository();
-    void inject(MainActivity activity);
 }

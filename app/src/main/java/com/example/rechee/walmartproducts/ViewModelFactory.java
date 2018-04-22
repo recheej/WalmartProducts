@@ -4,10 +4,13 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
+import com.example.rechee.walmartproducts.dagger.activity.ActivityScope;
+import com.example.rechee.walmartproducts.dagger.application.ApplicationScope;
 import com.example.rechee.walmartproducts.mainScreen.ProductListViewModel;
 
 import javax.inject.Inject;
 
+@ActivityScope
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private final ProductListViewModel productListViewModel;

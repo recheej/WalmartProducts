@@ -3,4 +3,6 @@
     <string name="product_image">Product Image</string>
     <string name="out_of_stock">Out of stock</string>
     <string name="error_general_products">Error getting products</string>
+    <string name="error_image_load">Failed to load image</string>
+    <string name="error_general">Error. Please try again</string>
 </resources>

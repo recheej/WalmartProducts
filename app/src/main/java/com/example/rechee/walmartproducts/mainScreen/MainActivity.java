@@ -19,12 +19,16 @@ import com.example.rechee.walmartproducts.BaseActivity;
 import com.example.rechee.walmartproducts.R;
 import com.example.rechee.walmartproducts.ViewModelFactory;
 import com.example.rechee.walmartproducts.WalmartProductsApplication;
+import com.example.rechee.walmartproducts.dagger.activity.ActivityContextModule;
+import com.example.rechee.walmartproducts.dagger.activity.DaggerActivityComponent;
 import com.example.rechee.walmartproducts.dagger.network.ApiComponent;
 import com.example.rechee.walmartproducts.dagger.network.DaggerApiComponent;
 import com.example.rechee.walmartproducts.dagger.network.NetModule;
 import com.example.rechee.walmartproducts.dagger.viewmodel.DaggerViewModelComponent;
 import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryModule;
+import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelComponent;
 import com.example.rechee.walmartproducts.models.Product;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,9 @@ public class MainActivity extends BaseActivity {
     private static final String CURRENT_PAGE_KEY = "current_page";
     @Inject
     ViewModelFactory viewModelFactory;
+
+    @Inject
+    Picasso picasso;
 
     private ProductListViewModel viewModel;
     private RecyclerView productRecyclerView;
@@ -62,9 +69,14 @@ public class MainActivity extends BaseActivity {
                 .applicationComponent(WalmartProductsApplication.getAppComponent(this))
                 .build();
 
-        DaggerViewModelComponent.builder()
+        ViewModelComponent viewModelComponent = DaggerViewModelComponent.builder()
                 .repositoryModule(new RepositoryModule())
                 .apiComponent(apiComponent)
+                .build();
+
+        DaggerActivityComponent.builder()
+                .viewModelComponent(viewModelComponent)
+                .activityContextModule(new ActivityContextModule(this))
                 .build().inject(this);
 
         progressBar = findViewById(R.id.progressBar);
@@ -115,7 +127,7 @@ public class MainActivity extends BaseActivity {
 
                 if(newProducts != null){
                     MainActivity.this.products.addAll(newProducts);
-                    productListAdapter = new ProductListAdapter(MainActivity.this.products);
+                    productListAdapter = new ProductListAdapter(MainActivity.this.products, picasso, MainActivity.this);
                     productRecyclerView.setAdapter(productListAdapter);
                     endlessListener.setStartingPage(viewModel.getCurrentPage());
                 }
@@ -159,6 +171,19 @@ public class MainActivity extends BaseActivity {
     public void onError(ErrorMessage errorMessage) {
         progressBar.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setRefreshing(false);
-        Toast.makeText(this, R.string.error_general_products, Toast.LENGTH_LONG).show();
+
+        int errorToShow;
+        switch (errorMessage){
+            case IMAGE_FAIL:
+                errorToShow = R.string.error_image_load;
+                break;
+            case GENERAL:
+                errorToShow = R.string.error_general_products;
+                break;
+            default:
+                errorToShow = R.string.error_general;
+        }
+
+        Toast.makeText(this, errorToShow, Toast.LENGTH_LONG).show();
     }
 }

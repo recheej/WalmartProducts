@@ -1,5 +1,5 @@
 package com.example.rechee.walmartproducts.mainScreen;
 
 public enum ErrorMessage {
-    GENERAL
+    IMAGE_FAIL, GENERAL
 }

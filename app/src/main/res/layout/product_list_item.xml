@@ -2,47 +2,52 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="144dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <ImageView
         android:id="@+id/imageView_product"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:contentDescription="@string/product_image"
-        android:paddingStart="16dp" />
+        android:paddingEnd="8dp"/>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="72dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/textView_productPrice"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="Product Price"
             android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/textView_productName"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:text="Product Name"
             android:textSize="16sp" />
 
         <TextView
+            android:layout_marginTop="8dp"
             android:id="@+id/textView_outOfStock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/out_of_stock"
-            android:visibility="gone"
-            android:textColor="#ff0000"/>
+            android:textColor="#ff0000"
+            android:visibility="gone" />
 
     </LinearLayout>
 

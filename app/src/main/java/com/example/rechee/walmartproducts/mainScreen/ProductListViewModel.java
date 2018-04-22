@@ -5,6 +5,8 @@ import android.arch.lifecycle.LiveData;
 
 import com.example.rechee.walmartproducts.BaseViewModel;
 import com.example.rechee.walmartproducts.ProductRepository;
+import com.example.rechee.walmartproducts.dagger.activity.ActivityScope;
+import com.example.rechee.walmartproducts.dagger.application.ApplicationScope;
 import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelScope;
 import com.example.rechee.walmartproducts.models.Product;
 
@@ -12,7 +14,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-@ViewModelScope
+@ActivityScope
 public class ProductListViewModel extends BaseViewModel {
 
     private static final int PAGE_SIZE = 10;
