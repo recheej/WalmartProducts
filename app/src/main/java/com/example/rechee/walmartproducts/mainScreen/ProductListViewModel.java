@@ -1,22 +1,18 @@
 package com.example.rechee.walmartproducts.mainScreen;
 
-import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.lifecycle.ViewModel;
 
 
 import com.example.rechee.walmartproducts.BaseViewModel;
 import com.example.rechee.walmartproducts.ProductRepository;
-import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryScope;
+import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelScope;
 import com.example.rechee.walmartproducts.models.Product;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-@RepositoryScope
+@ViewModelScope
 public class ProductListViewModel extends BaseViewModel {
 
     private static final int PAGE_SIZE = 10;

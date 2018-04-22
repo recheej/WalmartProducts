@@ -22,7 +22,7 @@ import com.example.rechee.walmartproducts.WalmartProductsApplication;
 import com.example.rechee.walmartproducts.dagger.network.ApiComponent;
 import com.example.rechee.walmartproducts.dagger.network.DaggerApiComponent;
 import com.example.rechee.walmartproducts.dagger.network.NetModule;
-import com.example.rechee.walmartproducts.dagger.viewmodel.DaggerRepositoryComponent;
+import com.example.rechee.walmartproducts.dagger.viewmodel.DaggerViewModelComponent;
 import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryModule;
 import com.example.rechee.walmartproducts.models.Product;
 
@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
                 .applicationComponent(WalmartProductsApplication.getAppComponent(this))
                 .build();
 
-        DaggerRepositoryComponent.builder()
+        DaggerViewModelComponent.builder()
                 .repositoryModule(new RepositoryModule())
                 .apiComponent(apiComponent)
                 .build().inject(this);

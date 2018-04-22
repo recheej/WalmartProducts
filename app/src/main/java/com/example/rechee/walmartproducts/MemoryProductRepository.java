@@ -3,15 +3,14 @@ package com.example.rechee.walmartproducts;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.example.rechee.walmartproducts.ProductRepository;
-import com.example.rechee.walmartproducts.dagger.viewmodel.RepositoryScope;
+import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelScope;
 import com.example.rechee.walmartproducts.mainScreen.ErrorMessage;
 import com.example.rechee.walmartproducts.models.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RepositoryScope
+@ViewModelScope
 public class MemoryProductRepository implements ProductRepository {
     @Override
     public LiveData<List<Product>> getProducts(int page, int pageSize) {

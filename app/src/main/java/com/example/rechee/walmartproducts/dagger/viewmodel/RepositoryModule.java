@@ -15,13 +15,13 @@ import dagger.Provides;
 public class RepositoryModule {
 
     @Provides
-    @RepositoryScope
+    @ViewModelScope
     public ProductRepository productRepository(MemoryProductRepository productNetworkRepository){
         return productNetworkRepository;
     }
 
     @Provides
-    @RepositoryScope
+    @ViewModelScope
     public MemoryProductRepository memoryProductRepository(){
         return new MemoryProductRepository();
     }
