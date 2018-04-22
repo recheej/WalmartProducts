@@ -127,11 +127,14 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRefresh() {
                 MainActivity.this.products.clear();
+                productListAdapter.notifyDataSetChanged();
                 viewModel.reset();
                 viewModel.getProducts().observe(MainActivity.this, new Observer<List<Product>>() {
                     @Override
                     public void onChanged(@Nullable List<Product> newProducts) {
-                        updateProducts(newProducts);
+                        if(newProducts != null){
+                            updateProducts(newProducts);
+                        }
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });

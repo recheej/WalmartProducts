@@ -1,9 +1,7 @@
 package com.example.rechee.walmartproducts.dagger.viewmodel;
 
 
-import android.content.Context;
-
-import com.example.rechee.walmartproducts.ProductNetworkRepository;
+import com.example.rechee.walmartproducts.MemoryProductRepository;
 import com.example.rechee.walmartproducts.ProductRepository;
 
 import dagger.Module;
@@ -18,7 +16,13 @@ public class RepositoryModule {
 
     @Provides
     @RepositoryScope
-    public ProductRepository productRepository(ProductNetworkRepository productNetworkRepository){
+    public ProductRepository productRepository(MemoryProductRepository productNetworkRepository){
         return productNetworkRepository;
+    }
+
+    @Provides
+    @RepositoryScope
+    public MemoryProductRepository memoryProductRepository(){
+        return new MemoryProductRepository();
     }
 }
