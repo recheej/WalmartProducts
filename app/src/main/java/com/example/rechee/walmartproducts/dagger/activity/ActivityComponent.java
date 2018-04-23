@@ -6,6 +6,7 @@ import com.example.rechee.walmartproducts.dagger.application.ApplicationComponen
 import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelComponent;
 import com.example.rechee.walmartproducts.dagger.viewmodel.ViewModelScope;
 import com.example.rechee.walmartproducts.mainScreen.MainActivity;
+import com.example.rechee.walmartproducts.productDetailScreen.ProductDetailActivity;
 
 import javax.inject.Named;
 
@@ -19,6 +20,8 @@ import dagger.Component;
 @Component(modules={ActivityContextModule.class}, dependencies = {ViewModelComponent.class})
 public interface ActivityComponent {
     void inject(MainActivity activity);
+    void inject(ProductDetailActivity productDetailActivity);
+
     @Named("activityContext")
     Context getActivityContext();
 }

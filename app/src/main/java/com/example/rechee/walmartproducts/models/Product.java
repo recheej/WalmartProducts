@@ -36,6 +36,8 @@ public class Product implements Parcelable {
     @Expose
     private Boolean inStock;
 
+    public  Product() {}
+
     protected Product(Parcel in) {
         productId = in.readString();
         productName = in.readString();
@@ -54,7 +56,7 @@ public class Product implements Parcelable {
             reviewCount = in.readInt();
         }
         byte tmpInStock = in.readByte();
-        inStock = tmpInStock == 0 ? null : tmpInStock == 1;
+        inStock = tmpInStock != 0;
     }
 
     @Override
@@ -77,7 +79,7 @@ public class Product implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(reviewCount);
         }
-        dest.writeByte((byte) (inStock == null ? 0 : inStock ? 1 : 2));
+        dest.writeByte((byte) (inStock ? 1 : 0));
     }
 
     @Override

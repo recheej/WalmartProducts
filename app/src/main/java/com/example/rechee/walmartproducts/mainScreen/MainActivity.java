@@ -172,18 +172,6 @@ public class MainActivity extends BaseActivity {
         progressBar.setVisibility(View.INVISIBLE);
         swipeRefreshLayout.setRefreshing(false);
 
-        int errorToShow;
-        switch (errorMessage){
-            case IMAGE_FAIL:
-                errorToShow = R.string.error_image_load;
-                break;
-            case GENERAL:
-                errorToShow = R.string.error_general_products;
-                break;
-            default:
-                errorToShow = R.string.error_general;
-        }
-
-        Toast.makeText(this, errorToShow, Toast.LENGTH_LONG).show();
+        super.onError(errorMessage);
     }
 }

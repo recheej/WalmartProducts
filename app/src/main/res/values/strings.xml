@@ -5,4 +5,5 @@
     <string name="error_general_products">Error getting products</string>
     <string name="error_image_load">Failed to load image</string>
     <string name="error_general">Error. Please try again</string>
+    <string name="about_this_item">About this item</string>
 </resources>
