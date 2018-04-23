@@ -1,6 +1,8 @@
 package com.example.rechee.walmartproducts.mainScreen;
 
+import android.arch.core.util.Function;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.Transformations;
 
 
 import com.example.rechee.walmartproducts.BaseViewModel;
@@ -41,7 +43,17 @@ public class ProductListViewModel extends BaseViewModel {
 
     public LiveData<List<Product>> getNextProducts() {
         currentPage++;
-        return repository.getProducts(this.currentPage, PAGE_SIZE);
+        
+        return Transformations.map(repository.getProducts(this.currentPage + 1, PAGE_SIZE), new Function<List<Product>, List<Product>>() {
+            @Override
+            public List<Product> apply(List<Product> input) {
+                if(input != null && input.size() > 0){
+                    currentPage++;
+                }
+
+                return input;
+            }
+        });
     }
 
     public int getCurrentPage() {
