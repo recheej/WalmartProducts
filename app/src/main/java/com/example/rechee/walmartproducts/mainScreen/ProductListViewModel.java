@@ -42,8 +42,6 @@ public class ProductListViewModel extends BaseViewModel {
     }
 
     public LiveData<List<Product>> getNextProducts() {
-        currentPage++;
-        
         return Transformations.map(repository.getProducts(this.currentPage + 1, PAGE_SIZE), new Function<List<Product>, List<Product>>() {
             @Override
             public List<Product> apply(List<Product> input) {
