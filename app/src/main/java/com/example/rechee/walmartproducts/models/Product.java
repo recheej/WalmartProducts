@@ -1,9 +1,12 @@
 package com.example.rechee.walmartproducts.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+public class Product implements Parcelable {
 
     @SerializedName("productId")
     @Expose
@@ -32,6 +35,67 @@ public class Product {
     @SerializedName("inStock")
     @Expose
     private Boolean inStock;
+
+    protected Product(Parcel in) {
+        productId = in.readString();
+        productName = in.readString();
+        shortDescription = in.readString();
+        longDescription = in.readString();
+        price = in.readString();
+        productImage = in.readString();
+        if (in.readByte() == 0) {
+            reviewRating = null;
+        } else {
+            reviewRating = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            reviewCount = null;
+        } else {
+            reviewCount = in.readInt();
+        }
+        byte tmpInStock = in.readByte();
+        inStock = tmpInStock == 0 ? null : tmpInStock == 1;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(productId);
+        dest.writeString(productName);
+        dest.writeString(shortDescription);
+        dest.writeString(longDescription);
+        dest.writeString(price);
+        dest.writeString(productImage);
+        if (reviewRating == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(reviewRating);
+        }
+        if (reviewCount == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(reviewCount);
+        }
+        dest.writeByte((byte) (inStock == null ? 0 : inStock ? 1 : 2));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public String getProductId() {
         return productId;
